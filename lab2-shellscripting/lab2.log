@@ -1,0 +1,54 @@
+For the lab, we needed to be in standard C. In order to ensure this, I used the following shell commmand according to assignment directions: export LC_ALL='C' which changes the default language for output to C. In order to check if the correct language was being used, we used the shell command locale.
+
+Next for the lab I created a sorted list of English words from the file /usr/share/dict/words by using the sort command and feeding that output into a file called words.
+
+From there, following directions, I ran the commands that are below and noted the differences.
+
+
+tr -c 'A-Za-z' '[\n*]' - This outputted just the letters present in the assign.html. This is because the -c complement is used. Thus the command translates everything that is not 'A-Za-z' (not a letter) into a newline.
+
+tr -cs 'A-a-z' '[\n*]' - This command in comparison to the previous omitted extra newlines. This is because it did not duplicate replacements. So if there was more than one of the same characters sequentially to replace, extra newlines were not inserted.
+
+tr -cs 'A-a-z' '[\n*]' | sort - This command in comparison to the one above sorts the lines in the output alphabetically
+This is because the sort option was used.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u <assign2.html This command in comparison to the one above doess not include duplicate lines.This is because the unique option is used, which filters out duplicates.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words   After filtering out all non letters and sorting  the result, that output is compared with the file named words. The first column only shows lines unique to file 1, the second column only has lines unique to file 2, and the third column only contains lines that are in common between the two files.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words The output is the same except columns 2 and 3 are filtered out, leaving only lines unique to file1. Because we are comparing to "words" which contains an English dictionary, it is a crude spellchecker.
+
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm -23 - hwords | wc
+
+I found a total of 405 mispelled Hawaiian words and 38 mispelled English words. 
+
+
+To create a Hawaiian dictionary, I used the command: 'wget http://mauimapp.com/moolelo/hwnwdseng.htm'. The assigned task was to take this list of English words translated into Hawaiian words and leave only the Hawaiian words behind. To accomplish this, I wrote the script which is included below.  
+#!/bin/sh
+sed '/<!DOCTYPE/, /Adopt<\/td>/d' | \  # deletes the unnecessary content at beginning
+sed '/<\/table>/, /<\/table>/d' | \ # delete unnecessary end lines 
+sed '/<\/tr>/,/<\/td>/d' | \ # delete english words by deleting everything between tags </tr> and </td> 
+sed 's/<[^>]*>//g' | \ # removes all html tags 
+tr '`' "'" | \ # replaces ` with ' as according to instructions 
+sed 's/^ *//g' | \ #remove leading spaces 
+sed 's/ *$//g' | \ #removes empty lines *$ is where beginning and end of line meet
+sed '/^$/d' | \ # 
+sed "/[^pk'mnwlhaeiou]/Id" | \ #removes words that contain non-Hawaiian letters
+tr '[:upper:]' '[:lower:]' | \ #puts everything in lowercase
+sort -u # sorts the dictionary 
+
+From there we can execute the script by first adding executable permissions 'chmod +x buildwords". After, we can execute the script with the proper html page: 
+cat hwds | ./buildwords 
+cat hwds | ./buildwords  > hwords # Store the hawaiian words in a file 
+
+The result can then be piped into hwords to form a Hawaiian dictionary. Modifying the tr command we used above, we can form a crude Hawaiian spellchecker. 
+
+
+Use 
+cat inputFile | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - hwords
+
+The result will be a list of words from the inputFile that were mispelled in Hawaiian. 
+
+By piping the outputs to 'wc' we can count how many words were mispelled. 
+
+

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+D="$1" 
+export LC_ALL=C
+
+find "$D" -maxdepth 1 -type f -printf '%f\n' | \
+#replace '.' with nullbyte ('x0') so any file with nullbyte 
+#will be sorted before those without
+sed 's/^\./\x0/g' | \ 
+sort | \ # sorts 
+sed 's/^\x0/./g' | ( #puts . back in) 
+	while IFS=$'\n' read f; do # innerloop to compare one file to another
+	   find "$D" -maxdepth 1 -type f -printf '%f\n' | \
+	   sed 's/^\./\x0/g' | \
+	   sort | \
+	   sed 's/^\x0/./g' | (
+		while IFS=$'\n' read g; do
+		   if [ "$f" = "$g" ]
+		   then
+		       break
+		   fi
+		   #if the two files are the same hardlink them
+		   if cmp -s "$D/$f" "$D/$g" 
+		   then
+		       ln -f "$D/$g" "$D/$f"
+		       break
+		   fi
+		done
+	    )
+	done
+)
+	

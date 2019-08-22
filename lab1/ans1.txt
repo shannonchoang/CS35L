@@ -1,0 +1,61 @@
+1. man -k 
+Commands used: man man 
+2. mv is located in /usr/bin
+   sh is located in /usr/bin
+Commands used: whereis mv whereis sh 
+3. ar (1)               - create, modify, and extract from archives
+ar (1p)              - create and maintain library archives
+pr (1)               - convert text files for printing
+pr (1p)              - print files
+tr (1)               - translate or delete characters
+tr (1p)              - translate characters
+Commands used: cd/usr/bin
+	       manwhatis
+	       whatis ?r
+4. /etcs/alternatives/emacs
+Commands: readlink /usr/bin/emacs
+5. gcc (GCC) 4.8.5 20150623 
+Plain gcc: 4.8.5 20150623
+Commands: /usr/bin/gcc --version 
+6.
+ u+sx - gives user owner permission to execute (or search for directories)
+o-w - takes away other users not in the file’s group right to write to the file in question
+Commands: man chmod 
+7. Unfortunately too many files to list resulted
+Commands: find -type d -mtime -28 
+8. 252 files were symbolic links 
+Commands: whereis find
+	  cd /usr/bin
+	  find .-type |
+9. Cd /usr/lib64
+ls -t -p| grep -v /
+librom1394.so.0.3.0 is the oldest regular file
+10. The locale command gets its data from environment variables such as LC_CTYPE, LC_COLLATE, LC_TIME. This is clear from the manual page. 
+Commands: man locale
+11.
+downcase-region               C-x C-l
+Convert the region to lower case.  In programs, wants two arguments.
+downcase-word                 M-l
+Convert following word (or ARG words) to lower case, moving over.
+Commands:I used Ctrl-h a and then typed “downcase”
+12.
+ C-M-r:  isearch-backward-regexp - Do incremental search backward for regular expression 
+C-M-s: isearch-foward-regexp- Do incremental search forward for regular expression. 
+C-M-t: transpose-sexps - Like \[transpose-words] but applies to sexps. 
+C-M-u: backward-up-list - Move backward out of one level of parentheses 
+C-M-v: scroll-other-window - Scroll next window upward ARG lines; or near full screen if no ARG. 
+Commands: C-h b to display commands, C-x o to switch to help window and scroll down. Then used C-h a[function name] to look up brief descriptions for each function. 
+13. C-g runs the command keyboard-quit, an interactive compiled Lisp Function. It’s bound to C-g. 
+(keyboard-quit) signals a ‘quit’ condition. During execution of Lisp code, this character causes a quit directly.
+At top-level, as an editor command, this simply beeps.
+Commands: C-h k then C-g to search the command 
+14. Yank reinserts("pastes")the last stretch of killed text. 
+Commands: C-h a then searched "yank". The yank command is C-y. 
+15. The emacs dired command shows hidden files whereas ls -l does not show hidden commands, this is the only difference. 
+Commands: cd /usr/bin 
+emacs 
+C-x d 
+C-x C-c(to quit emacs)
+ls -l 
+
+
